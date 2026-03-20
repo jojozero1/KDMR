@@ -1,0 +1,26 @@
+# KDMR Solver Configuration
+
+# SCP (Sequential Convex Programming) Parameters
+scp:
+  max_iterations: 10
+  convergence_threshold: 1.0e-4
+  trust_region_radius: 0.1
+  trust_region_increase: 1.5
+  trust_region_decrease: 0.5
+
+# DDP (Differential Dynamic Programming) Parameters
+ddp:
+  max_iterations: 50
+  convergence_threshold: 1.0e-6
+  regularization: 1.0e-5
+  regularization_factor: 2.0
+
+# Line Search Parameters
+line_search:
+  max_steps: 10
+  step_factor: 0.5
+  min_step_size: 1.0e-4
+
+# Verbosity
+verbose: true
+print_interval: 10

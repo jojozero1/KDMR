@@ -1,0 +1,30 @@
+# Booster T1 Robot Configuration
+
+name: booster_t1
+type: humanoid
+
+mjcf_path: booster_t1/T1_locomotion.xml
+urdf_path: booster_t1/T1_locomotion.urdf
+
+nq: 23
+nv: 22
+nu: 17
+
+contact_bodies:
+  left_foot: left_ankle_link
+  right_foot: right_ankle_link
+
+root_body: pelvis
+
+mass: 45.0
+height: 1.60
+
+friction:
+  foot_ground: 1.0
+
+ik_mapping:
+  pelvis:
+    robot_body: pelvis
+    position_weight: 100.0
+    rotation_weight: 10.0
+    scale: 0.9

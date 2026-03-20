@@ -1,0 +1,136 @@
+# Unitree G1 Robot Configuration
+
+# Robot identification
+name: unitree_g1
+type: humanoid
+
+# Model paths (relative to assets directory)
+mjcf_path: unitree_g1/g1_mocap_29dof.xml
+urdf_path: unitree_g1/g1_custom_collision_29dof.urdf
+
+# Dimensions
+nq: 29  # Generalized positions (7 root + 22 joints)
+nv: 28  # Generalized velocities
+nu: 23  # Actuators
+
+# Body names for contact detection
+contact_bodies:
+  left_foot: left_toe_link
+  right_foot: right_toe_link
+  left_heel: left_ankle_link
+  right_heel: right_ankle_link
+
+# Root body
+root_body: pelvis
+
+# Joint limits (radians)
+joint_limits:
+  lower: [-1.0, -0.5, -1.5, -2.5, -1.5, -0.5, -1.0,
+          -1.0, -0.5, -1.5, -2.5, -1.5, -0.5, -1.0,
+          -2.0, -1.5, -2.0, -1.5, -1.5,
+          -2.0, -1.5, -2.0, -1.5, -1.5]
+  upper: [1.0, 0.5, 1.5, 2.5, 1.5, 0.5, 1.0,
+          1.0, 0.5, 1.5, 2.5, 1.5, 0.5, 1.0,
+          2.0, 1.5, 2.0, 1.5, 1.5,
+          2.0, 1.5, 2.0, 1.5, 1.5]
+
+# Torque limits (Nm)
+torque_limits:
+  max: [40.0, 40.0, 40.0, 80.0, 40.0, 15.0, 15.0,
+        40.0, 40.0, 40.0, 80.0, 40.0, 15.0, 15.0,
+        30.0, 30.0, 20.0, 20.0, 10.0,
+        30.0, 30.0, 20.0, 20.0, 10.0]
+
+# Physical parameters
+mass: 35.0  # kg
+height: 1.27  # m
+
+# Friction parameters
+friction:
+  foot_ground: 1.0
+
+# IK mapping (human to robot)
+ik_mapping:
+  pelvis:
+    robot_body: pelvis
+    position_weight: 100.0
+    rotation_weight: 10.0
+    scale: 0.9
+    
+  left_hip:
+    robot_body: left_hip_roll_link
+    position_weight: 0.0
+    rotation_weight: 10.0
+    scale: 0.9
+    
+  left_knee:
+    robot_body: left_knee_link
+    position_weight: 0.0
+    rotation_weight: 10.0
+    scale: 0.9
+    
+  left_foot:
+    robot_body: left_toe_link
+    position_weight: 100.0
+    rotation_weight: 10.0
+    scale: 0.9
+    
+  right_hip:
+    robot_body: right_hip_roll_link
+    position_weight: 0.0
+    rotation_weight: 10.0
+    scale: 0.9
+    
+  right_knee:
+    robot_body: right_knee_link
+    position_weight: 0.0
+    rotation_weight: 10.0
+    scale: 0.9
+    
+  right_foot:
+    robot_body: right_toe_link
+    position_weight: 100.0
+    rotation_weight: 10.0
+    scale: 0.9
+    
+  spine3:
+    robot_body: torso_link
+    position_weight: 0.0
+    rotation_weight: 10.0
+    scale: 0.9
+    
+  left_shoulder:
+    robot_body: left_shoulder_yaw_link
+    position_weight: 0.0
+    rotation_weight: 10.0
+    scale: 0.8
+    
+  left_elbow:
+    robot_body: left_elbow_link
+    position_weight: 0.0
+    rotation_weight: 10.0
+    scale: 0.8
+    
+  left_wrist:
+    robot_body: left_wrist_yaw_link
+    position_weight: 0.0
+    rotation_weight: 10.0
+    scale: 0.8
+    
+  right_shoulder:
+    robot_body: right_shoulder_yaw_link
+    position_weight: 0.0
+    rotation_weight: 10.0
+    scale: 0.8
+    
+  right_elbow:
+    robot_body: right_elbow_link
+    position_weight: 0.0
+    rotation_weight: 10.0
+    scale: 0.8
+    
+  right_wrist:
+    robot_body: right_wrist_yaw_link
+    position_weight: 0.0
+    rotation_weight: 10.0
+    scale: 0.8

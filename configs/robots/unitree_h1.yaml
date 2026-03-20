@@ -1,0 +1,30 @@
+# Unitree H1 Robot Configuration
+
+name: unitree_h1
+type: humanoid
+
+mjcf_path: unitree_h1/h1.xml
+urdf_path: unitree_h1/h1.urdf
+
+nq: 25
+nv: 24
+nu: 19
+
+contact_bodies:
+  left_foot: left_ankle_link
+  right_foot: right_ankle_link
+
+root_body: pelvis
+
+mass: 47.0
+height: 1.80
+
+friction:
+  foot_ground: 1.0
+
+ik_mapping:
+  pelvis:
+    robot_body: pelvis
+    position_weight: 100.0
+    rotation_weight: 10.0
+    scale: 0.95
