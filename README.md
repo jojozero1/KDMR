@@ -1,4 +1,21 @@
-# KDMR - Kinodynamic Motion Retargeting
+<p align="center">
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=28&duration=3000&pause=500&center=true&vCenter=true&width=600&lines=KDMR;Kinodynamic+Motion+Retargeting" alt="Typing SVG" />
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/arXiv-2603.09956-b31b1b.svg?style=for-the-badge" alt="arXiv">
+  <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/MuJoCo-3.0+-FF6B6B?style=for-the-badge&logo=google&logoColor=white" alt="MuJoCo">
+  <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="License">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Dynamics_Constrained-✓-success?style=flat-square" alt="Dynamics">
+  <img src="https://img.shields.io/badge/Multi_Contact-✓-success?style=flat-square" alt="Multi-Contact">
+  <img src="https://img.shields.io/badge/SCP_DDP-✓-success?style=flat-square" alt="SCP-DDP">
+  <img src="https://img.shields.io/badge/GRF_Integration-✓-success?style=flat-square" alt="GRF">
+</p>
+
 
 A dynamics-constrained motion retargeting framework for humanoid locomotion, based on the paper **"Kinodynamic Motion Retargeting for Humanoid Locomotion via Multi-Contact Whole-Body Trajectory Optimization"** (arXiv:2603.09956).
 
