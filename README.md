@@ -16,6 +16,9 @@
   <img src="https://img.shields.io/badge/GRF_Integration-✓-success?style=flat-square" alt="GRF">
 </p>
 
+<div align="center">
+  <img width="800" height="400" alt="image" src="https://github.com/user-attachments/assets/007c3130-b9d3-4544-b6a0-3a66d0e749a2" />
+</div>
 
 A dynamics-constrained motion retargeting framework for humanoid locomotion, based on the paper **"Kinodynamic Motion Retargeting for Humanoid Locomotion via Multi-Contact Whole-Body Trajectory Optimization"** (arXiv:2603.09956).
 
