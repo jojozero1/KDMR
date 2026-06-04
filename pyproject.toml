@@ -1,0 +1,110 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qkdmr"
+version = "2.0.0"
+description = "Quantum Kinetodynamic Motion Retargeting — First-Principles Physics for Humanoid Locomotion"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "QKDMR Team"}
+]
+keywords = [
+    "robotics",
+    "motion-retargeting",
+    "humanoid",
+    "hamiltonian-mechanics",
+    "trajectory-optimization",
+    "symplectic-integrator",
+    "contact-implicit",
+    "riemannian-optimization",
+    "diffusion-models",
+    "mujoco",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Robotics",
+]
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=1.24.0",
+    "scipy>=1.10.0",
+    "mujoco>=3.0.0",
+    "matplotlib>=3.7.0",
+    "rich>=13.0.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+# Core physics (required for basic use)
+physics = [
+    "mujoco>=3.0.0",
+]
+
+# Learning components (diffusion prior, etc.)
+learn = [
+    "torch>=2.0.0",
+    "smplx>=0.1.28",       # SMPLX body model
+]
+
+# Auto-differentiation (JAX for faster gradients)
+autodiff = [
+    "jax>=0.4.0",
+    "jaxlib>=0.4.0",
+]
+
+# Development
+dev = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "isort>=5.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0.0",
+]
+
+# Full installation
+all = [
+    "torch>=2.0.0",
+    "jax>=0.4.0",
+    "jaxlib>=0.4.0",
+    "smplx>=0.1.28",
+    "casadi>=3.6.0",
+    "imageio>=2.0.0",
+    "pytest>=7.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/jojozero1/KDMR"
+Documentation = "https://github.com/jojozero1/KDMR/tree/main/KDMR_v2"
+Repository = "https://github.com/jojozero1/KDMR.git"
+Issues = "https://github.com/jojozero1/KDMR/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["kdmr_v2*"]
+
+[tool.black]
+line-length = 100
+target-version = ['py311']
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true

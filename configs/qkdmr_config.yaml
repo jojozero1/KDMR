@@ -1,0 +1,172 @@
+# ============================================================================
+# QKDMR v2.0 Configuration
+# ============================================================================
+#
+# This is the configuration for Quantum Kinetodynamic Motion Retargeting (v2.0).
+# It replaces the SCP-DDP solver with a first-principles physics approach:
+# Hamiltonian Monte Carlo, contact-implicit NCP, Riemannian optimization,
+# symplectic integration, and energy shaping.
+#
+# Key difference from v0.1: Many settings that were "engineering choices"
+# in v0.1 are now "physics parameters" in v2.0 — they map directly to
+# physical quantities with clear first-principles justification.
+
+# =============================================================================
+# Optimizer: Hamiltonian Monte Carlo Trajectory Optimization (HMCTO)
+# =============================================================================
+optimizer:
+  type: hamiltonian  # "hamiltonian" | "scp_ddp" (legacy v0.1)
+
+  # Convergence settings
+  max_iterations: 200
+  convergence_threshold: 1.0e-5  # On relative action change
+  patience: 30                    # Early stopping patience
+
+  # Langevin dynamics parameters
+  # The optimizer samples from the canonical ensemble at temperature T.
+  # At T = 0, this becomes pure natural gradient descent.
+  # At T > 0, Langevin noise helps escape local minima.
+  temperature: 0.01               # Exploration temperature (0 = deterministic)
+  friction: 0.1                   # Momentum damping γ (p ← e^{-γΔt}·p)
+  step_size: 0.01                 # Natural gradient learning rate
+
+  # Nesterov accelerated gradient on the Lie group
+  use_nesterov: true
+  momentum_beta: 0.9
+
+  # Verbosity
+  verbose: true
+  log_interval: 20
+
+# =============================================================================
+# Symplectic Integration
+# =============================================================================
+integrator:
+  # Type of symplectic integrator:
+  # - "verlet":     Störmer-Verlet, 2nd order, simplest
+  # - "yoshida":    Yoshida composition, 4th/6th/8th order
+  # - "variational": Variational integrator from discrete Lagrangian
+  type: yoshida
+
+  # Integration order (only for Yoshida): 2, 4, 6, or 8
+  # Higher order = more accurate energy conservation, more expensive
+  # 6th order is a good balance for humanoid trajectories
+  order: 6
+
+  # Integration time step (seconds)
+  # Should match the motion data frame rate
+  dt: 0.005  # 200 Hz internal integration
+
+# =============================================================================
+# Contact Handling
+# =============================================================================
+contact:
+  # Contact mode:
+  # - "implicit":  NCP formulation (Fischer-Burmeister), contacts auto-detected
+  # - "soft":      Hunt-Crossley compliant contact, everywhere differentiable
+  # - "none":      No contact modeling (kinematic only)
+  mode: implicit
+
+  # For implicit (NCP) mode:
+  barrier_initial: 1000.0         # Initial interior-point barrier parameter μ
+  barrier_adaptation: true        # Auto-adapt barrier (μ → 0 in outer loop)
+  barrier_decay: 0.5              # Multiplicative decay per outer iteration
+
+  # For soft contact mode:
+  soft_contact:
+    stiffness: 100000.0           # Contact stiffness k (N/m^p)
+    damping: 1000.0               # Contact damping d (N·s/m)
+    hertz_exponent: 1.5           # Hertz exponent (1.5 for spheres)
+    friction_coef: 1.0            # Coulomb friction coefficient μ
+
+  # Friction cone
+  friction_coef: 1.0              # Global friction coefficient
+  friction_cone_smoothing: 100.0  # Smoothing parameter for tanh approximation
+
+# =============================================================================
+# Riemannian Geometry
+# =============================================================================
+geometry:
+  # Optimization geometry:
+  # - "riemannian": Lie group exponential map + natural gradient
+  # - "euclidean":  Standard Euclidean (with quaternion re-normalization)
+  type: riemannian
+
+  # Automatically detect Lie group structure from robot model
+  lie_group: auto
+
+# =============================================================================
+# Cost Function Weights
+# =============================================================================
+costs:
+  # These weights define the total action:
+  #   S_total = w_phys·S_physics + w_task·S_task + w_smooth·S_smooth
+  #            + w_contact·S_contact + w_energy·S_energy + w_diff·S_diff
+
+  tracking_pos: 100.0             # Position tracking weight
+  tracking_rot: 10.0              # Rotation tracking weight
+  smoothness: 10.0                # Jerk minimization weight
+  energy_conservation: 1.0        # Energy conservation (Noether) weight
+  contact_consistency: 10.0       # Contact NCP penalty weight
+  symmetry_preservation: 1.0      # Linear/angular momentum conservation
+  control_effort: 0.01            # Torque minimization weight
+
+# =============================================================================
+# Diffusion Prior
+# =============================================================================
+diffusion_prior:
+  enabled: false                   # Use learned warm-start?
+  model_path: null                 # Path to pretrained model (null = use default)
+  guidance_scale: 1.0              # Classifier-free guidance weight
+  num_diffusion_steps: 100         # DDPM denoising steps
+
+  # Architecture
+  hidden_dim: 512
+  num_layers: 8
+  num_heads: 8
+  dropout: 0.1
+  condition_dim: 256
+
+# =============================================================================
+# Energy Shaping (IDA-PBC)
+# =============================================================================
+energy_shaping:
+  enabled: false                   # Use energy shaping control?
+  damping_injection: 10.0          # Damping coefficient K_d
+  potential_stiffness: 1000.0      # Potential shaping stiffness K_p
+  desired_com_height: 0.9          # Desired COM height (meters)
+
+  # Barrier certificates for safety
+  safety_barriers:
+    joint_limits: true             # Enforce joint limits via CBF
+    ground_clearance: true         # Prevent ground penetration
+    torque_limits: true            # Enforce torque limits
+    zmp_constraint: false          # Zero Moment Point constraint
+
+# =============================================================================
+# Robot-Specific Settings
+# =============================================================================
+robot_defaults:
+  unitree_g1:
+    nq: 29
+    nv: 28
+    nu: 23
+    contact_bodies: [left_toe_link, right_toe_link, left_ankle_link, right_ankle_link]
+    com_height: 0.6
+    mass: 35.0
+
+  unitree_h1:
+    nq: 31
+    nv: 30
+    nu: 19
+    contact_bodies: [left_toe_link, right_toe_link]
+    com_height: 0.85
+    mass: 47.0
+
+  booster_t1:
+    nq: 29
+    nv: 28
+    nu: 29
+    contact_bodies: [left_toe_link, right_toe_link]
+    com_height: 0.65
+    mass: 38.0
